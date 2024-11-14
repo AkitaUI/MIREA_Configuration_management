@@ -3,6 +3,7 @@ import sys
 import zipfile
 import time
 import platform
+import subprocess
 from pathlib import Path
 
 class VirtualFileSystem:
@@ -10,6 +11,8 @@ class VirtualFileSystem:
         self.zip_path = zip_path
         self.extract_path = Path("virtual_fs")
         self.current_path = self.extract_path
+        self.zip_file = None  # для хранения ZIP-файла, если мы находимся в архиве
+        self.zip_contents = {}
         self.start_time = time.time()
 
         self.setup_virtual_fs()
@@ -20,17 +23,31 @@ class VirtualFileSystem:
                 zip_ref.extractall(self.extract_path)
 
     def list_files(self):
+        if self.zip_file:
+            return list(self.zip_contents.keys())
         return os.listdir(self.current_path)
 
     def change_directory(self, dir_name):
         if dir_name == "..":
-            self.current_path = self.current_path.parent
+            if self.zip_file:
+                self.zip_file = None
+                self.zip_contents = {}
+            else:
+                self.current_path = self.current_path.parent
         else:
             new_path = self.current_path / dir_name
-            if new_path.exists() and new_path.is_dir():
+            if new_path.exists() and new_path.is_file() and zipfile.is_zipfile(new_path):
+                self.enter_zip(new_path)
+            elif new_path.exists() and new_path.is_dir():
                 self.current_path = new_path
             else:
                 print(f"cd: no such file or directory: {dir_name}")
+
+    def enter_zip(self, zip_path):
+            with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                self.zip_file = zip_ref
+                self.zip_contents = {file.filename: file for file in zip_ref.infolist()}
+                print(f"Entered zip file: {zip_path.name}")
 
     def get_uptime(self):
         return time.time() - self.start_time
@@ -42,6 +59,7 @@ class VirtualFileSystem:
         return platform.platform()
 
 def main():
+
     print("Запуск стартового скрипта...")
     script_path = "start_script.sh"
     if os.path.exists(script_path):
@@ -53,7 +71,7 @@ def main():
             sys.exit(1)
     else:
         print("Стартовый скрипт не найден.")
-        
+
     global start_time
     
     if len(sys.argv) != 2:
@@ -63,9 +81,10 @@ def main():
     zip_path = sys.argv[1]
     if not zipfile.is_zipfile(zip_path):
         print("Error: The specified file is not a valid zip file.")
-        sys.exit(1)
+        sys.exit()
 
     global start_time
+
     start_time = time.time()
     vfs = VirtualFileSystem(zip_path)
 
