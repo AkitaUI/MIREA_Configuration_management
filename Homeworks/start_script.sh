@@ -2,7 +2,7 @@ echo "Подготовка к сборке..."
 mkdir -p virtual_fs
 
 echo "Запуск тестов..."
-python -m unittest discover -s . -p "Test_*.py" > test_results.txt
+py -m unittest discover -s . -p "Test_*.py" > test_results.txt
 cat test_results.txt
 
 echo "Очистка временных файлов..."
