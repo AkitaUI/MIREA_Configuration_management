@@ -42,6 +42,18 @@ class VirtualFileSystem:
         return platform.platform()
 
 def main():
+    print("Запуск стартового скрипта...")
+    script_path = "start_script.sh"
+    if os.path.exists(script_path):
+        bash_path = r"D:\Config\Git\bin\bash.exe"
+        result = subprocess.run([bash_path, script_path], capture_output=True, text=True)
+        print(result.stdout)
+        if result.returncode != 0:
+            print("Ошибка при запуске стартового скрипта:", result.stderr)
+            sys.exit(1)
+    else:
+        print("Стартовый скрипт не найден.")
+        
     global start_time
     
     if len(sys.argv) != 2:
