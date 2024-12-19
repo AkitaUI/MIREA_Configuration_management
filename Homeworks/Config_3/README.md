@@ -41,6 +41,8 @@ q(Это строка)
 
 # Результаты тестирование:
 
+# 1 Пример
+
 Вводные данные:
 
 ![image](https://github.com/user-attachments/assets/27096443-f0bd-4f7a-bb4d-4a6910e14e3d)
@@ -48,3 +50,13 @@ q(Это строка)
 Выходные данные в формате TOML:
 
 ![image](https://github.com/user-attachments/assets/d139775a-623e-4ea8-9666-0d2d7b7f46b8)
+
+# 2 Пример
+
+Вводные данные:
+
+![image](https://github.com/user-attachments/assets/167509c1-6cac-4a32-a7b7-3dac208219fa)
+
+Выходные данные в формате TOML:
+
+![image](https://github.com/user-attachments/assets/7d6793f1-f701-4fd6-9df3-b93751910ae9)
