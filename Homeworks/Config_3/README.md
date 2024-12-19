@@ -42,7 +42,9 @@ q(Это строка)
 № Результаты тестирование:
 
 Вводные данные:
+
 ![image](https://github.com/user-attachments/assets/27096443-f0bd-4f7a-bb4d-4a6910e14e3d)
 
 Выходные данные в формате TOML:
+
 ![image](https://github.com/user-attachments/assets/d139775a-623e-4ea8-9666-0d2d7b7f46b8)
